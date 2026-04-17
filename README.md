@@ -140,7 +140,7 @@ custom_components/zai_ha_agent/
 
 ## Credits
 
-Based on the [z.ai Conversation](https://github.com/henniiiing/zai-conversation-ha) integration, refactored to use the OpenAI-compatible Coding Plan API endpoint.
+Based on [z.ai Conversation](https://github.com/iannuz92/zai-conversation-ha) by [@iannuz92](https://github.com/iannuz92), refactored to use the OpenAI-compatible Coding Plan API endpoint with German as the default language.
 
 ## License
 
