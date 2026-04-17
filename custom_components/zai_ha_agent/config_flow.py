@@ -187,6 +187,8 @@ class ZaiConfigFlow(ConfigFlow, domain=DOMAIN):
 class ZaiOptionsFlowHandler(OptionsFlow):
     """Handle options flow for zAI HA Agent."""
 
+    _init_data: dict[str, Any]
+
     async def _get_available_models(self) -> list[str]:
         entry_data = self.config_entry.data
         api_key = entry_data.get(CONF_API_KEY, "")
@@ -218,6 +220,7 @@ class ZaiOptionsFlowHandler(OptionsFlow):
             if CONF_RECOMMENDED in user_input:
                 recommended = user_input.pop(CONF_RECOMMENDED)
                 if not recommended:
+                    self._init_data = user_input
                     return await self.async_step_advanced()
 
             return self.async_create_entry(title="", data=user_input)
@@ -292,9 +295,10 @@ class ZaiOptionsFlowHandler(OptionsFlow):
         errors: dict[str, str] = {}
 
         if user_input is not None:
+            init_data = getattr(self, "_init_data", {})
             return self.async_create_entry(
                 title="",
-                data={CONF_RECOMMENDED: False, **user_input},
+                data={CONF_RECOMMENDED: False, **init_data, **user_input},
             )
 
         options = self.config_entry.options or {}
