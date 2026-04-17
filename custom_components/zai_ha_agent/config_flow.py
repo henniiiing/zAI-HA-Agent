@@ -237,9 +237,9 @@ class ZaiOptionsFlowHandler(OptionsFlow):
             SelectSelectorConfig(
                 mode=SelectSelectorMode.DROPDOWN,
                 options=[
-                    {"value": PERSONALITY_FORMAL, "label": "Formale"},
-                    {"value": PERSONALITY_FRIENDLY, "label": "Amichevole"},
-                    {"value": PERSONALITY_CONCISE, "label": "Conciso"},
+                    {"value": PERSONALITY_FORMAL, "label": "Formell"},
+                    {"value": PERSONALITY_FRIENDLY, "label": "Freundlich"},
+                    {"value": PERSONALITY_CONCISE, "label": "Kurz"},
                 ],
                 translation_key=CONF_PERSONALITY,
             )

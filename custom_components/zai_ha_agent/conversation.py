@@ -187,12 +187,14 @@ async def _process_message(
 
 _MEMORY_PREFERENCE_PATTERNS = re.compile(
     r"(?:ricorda(?:ti)?|remember|nota(?:ti)?|note|salva|save|annota|preferisco|i prefer|mi piace|i like|"
-    r"non mi piace|i don'?t like|la mia .+ (?:preferit[ao]|ideale|favorit[ae])|my (?:favorite|preferred|ideal))",
+    r"non mi piace|i don'?t like|la mia .+ (?:preferit[ao]|ideale|favorit[ae])|my (?:favorite|preferred|ideal)|"
+    r"merke(?:n|dir)|bevorzug|ich mag|ich möchte|erinnere|mein (?:lieblings|favorit|ideal))",
     re.IGNORECASE,
 )
 
 _MEMORY_NOTE_PATTERNS = re.compile(
-    r"(?:ricordami|remind me|annotati|note to self|da ricordare|don'?t forget|non dimenticare|segna(?:ti)?)",
+    r"(?:ricordami|remind me|annotati|note to self|da ricordare|don'?t forget|non dimenticare|segna(?:ti)?|"
+    r"erinnere mich|nicht vergessen|merke (?:dir|das)|notiere|eselsbrücke)",
     re.IGNORECASE,
 )
 

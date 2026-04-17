@@ -74,46 +74,46 @@ DOMAIN_RELEVANT_ATTRS: dict[str, list[str]] = {
 
 # Human-readable state translations
 STATE_TRANSLATIONS: dict[str, dict[str, str]] = {
-    "light": {"on": "ACCESA", "off": "SPENTA", "unavailable": "NON DISPONIBILE"},
-    "switch": {"on": "ACCESO", "off": "SPENTO", "unavailable": "NON DISPONIBILE"},
+    "light": {"on": "EINGESCHALTET", "off": "AUSGESCHALTET", "unavailable": "NICHT VERFÜGBAR"},
+    "switch": {"on": "EINGESCHALTET", "off": "AUSGESCHALTET", "unavailable": "NICHT VERFÜGBAR"},
     "cover": {
-        "open": "APERTA",
-        "closed": "CHIUSA",
-        "opening": "IN APERTURA",
-        "closing": "IN CHIUSURA",
-        "unavailable": "NON DISPONIBILE",
+        "open": "OFFEN",
+        "closed": "GESCHLOSSEN",
+        "opening": "ÖFFNET",
+        "closing": "SCHLIEßT",
+        "unavailable": "NICHT VERFÜGBAR",
     },
     "lock": {
-        "locked": "CHIUSA",
-        "unlocked": "APERTA",
-        "locking": "IN CHIUSURA",
-        "unlocking": "IN APERTURA",
-        "unavailable": "NON DISPONIBILE",
+        "locked": "ABGESCHLOSSEN",
+        "unlocked": "ENTRIEGELT",
+        "locking": "WIRD ABGESCHLOSSEN",
+        "unlocking": "WIRD ENTRIEGELT",
+        "unavailable": "NICHT VERFÜGBAR",
     },
     "climate": {
-        "off": "SPENTO",
-        "heat": "RISCALDAMENTO",
-        "cool": "RAFFREDDAMENTO",
+        "off": "AUS",
+        "heat": "HEIZUNG",
+        "cool": "KÜHLUNG",
         "heat_cool": "AUTO",
-        "auto": "AUTOMATICO",
-        "dry": "DEUMIDIFICAZIONE",
-        "fan_only": "SOLO VENTILAZIONE",
-        "unavailable": "NON DISPONIBILE",
+        "auto": "AUTOMATISCH",
+        "dry": "ENTFEUCHTUNG",
+        "fan_only": "NUR LÜFTER",
+        "unavailable": "NICHT VERFÜGBAR",
     },
     "binary_sensor": {
-        "on": "ATTIVO",
-        "off": "INATTIVO",
-        "unavailable": "NON DISPONIBILE",
+        "on": "AKTIV",
+        "off": "INAKTIV",
+        "unavailable": "NICHT VERFÜGBAR",
     },
-    "person": {"home": "A CASA", "not_home": "FUORI CASA", "unavailable": "SCONOSCIUTO"},
+    "person": {"home": "ZU HAUSE", "not_home": "UNTERWEGS", "unavailable": "UNBEKANNT"},
     "alarm_control_panel": {
-        "disarmed": "DISARMATO",
-        "armed_home": "ARMATO CASA",
-        "armed_away": "ARMATO FUORI",
-        "armed_night": "ARMATO NOTTE",
-        "pending": "IN ATTESA",
-        "triggered": "ATTIVATO",
-        "unavailable": "NON DISPONIBILE",
+        "disarmed": "ENTWAFFNET",
+        "armed_home": "SCHARF ZUHAUSE",
+        "armed_away": "SCHARF ABWESEND",
+        "armed_night": "SCHARF NACHT",
+        "pending": "AUSSTEHEND",
+        "triggered": "AUSGELÖST",
+        "unavailable": "NICHT VERFÜGBAR",
     },
 }
 
@@ -135,13 +135,13 @@ def _translate_state(domain: str, state: str) -> str:
     if domain in STATE_TRANSLATIONS:
         return STATE_TRANSLATIONS[domain].get(state, state.upper())
     if state == "on":
-        return "ACCESO"
+        return "EINGESCHALTET"
     if state == "off":
-        return "SPENTO"
+        return "AUSGESCHALTET"
     if state == "unavailable":
-        return "NON DISPONIBILE"
+        return "NICHT VERFÜGBAR"
     if state == "unknown":
-        return "SCONOSCIUTO"
+        return "UNBEKANNT"
     return state.upper()
 
 
@@ -162,30 +162,30 @@ def _format_attributes(domain: str, state: State) -> str:
             if key == "brightness":
                 # Convert 0-255 to percentage
                 pct = round((value / 255) * 100)
-                attrs.append(f"luminosità: {pct}%")
+                attrs.append(f"Helligkeit: {pct}%")
             elif key == "color_temp":
-                attrs.append(f"temperatura colore: {value}K")
+                attrs.append(f"Farbtemperatur: {value}K")
             elif key == "volume_level":
                 pct = round(value * 100)
-                attrs.append(f"volume: {pct}%")
+                attrs.append(f"Lautstärke: {pct}%")
             elif key == "temperature" or key == "current_temperature":
                 unit = state.attributes.get("unit_of_measurement", "°C")
-                attrs.append(f"temperatura: {value}{unit}")
+                attrs.append(f"Temperatur: {value}{unit}")
             elif key == "humidity" or key == "current_humidity":
-                attrs.append(f"umidità: {value}%")
+                attrs.append(f"Luftfeuchtigkeit: {value}%")
             elif key == "current_position":
-                attrs.append(f"posizione: {value}%")
+                attrs.append(f"Position: {value}%")
             elif key == "battery_level":
-                attrs.append(f"batteria: {value}%")
+                attrs.append(f"Batterie: {value}%")
             elif key == "percentage":
-                attrs.append(f"velocità: {value}%")
+                attrs.append(f"Geschwindigkeit: {value}%")
             elif key == "unit_of_measurement" and domain == "sensor":
                 # Skip, will be used with state
                 continue
             elif isinstance(value, list):
                 attrs.append(f"{key}: {', '.join(str(v) for v in value[:5])}")
             elif isinstance(value, bool):
-                attrs.append(f"{key}: {'sì' if value else 'no'}")
+                attrs.append(f"{key}: {'ja' if value else 'nein'}")
             else:
                 attrs.append(f"{key}: {value}")
 
@@ -312,7 +312,7 @@ class DeviceContextBuilder:
 
         # Devices without area
         if no_area_devices:
-            output_parts.append("\n## Altro (senza area)")
+            output_parts.append("\n## Sonstige (ohne Bereich)")
             for device in sorted(no_area_devices, key=lambda x: x["name"]):
                 line = f"- {device['name']} ({device['entity_id']}): {device['state']}"
                 if device["attributes"]:

@@ -202,31 +202,31 @@ class AssistantMemory:
 
         context = self.get_all_context()
         if context:
-            parts.append("### Informazioni Utente")
+            parts.append("### Benutzerinformationen")
             for key, value in context.items():
                 readable_key = key.replace("_", " ").title()
                 parts.append(f"- {readable_key}: {value}")
 
         preferences = self.get_preferences()
         if preferences:
-            parts.append("\n### Preferenze Utente")
+            parts.append("\n### Benutzereinstellungen")
             for pref in preferences[-10:]:
                 parts.append(f"- {pref['text']}")
 
         notes = self.get_notes()
         if notes:
-            parts.append("\n### Note da Ricordare")
+            parts.append("\n### Notizen")
             for note in notes[-5:]:
                 parts.append(f"- {note['text']}")
 
         stats = self.get_stats()
         if stats.get("total_interactions", 0) > 0:
-            parts.append(f"\n### Statistiche")
-            parts.append(f"- Interazioni totali: {stats['total_interactions']}")
+            parts.append(f"\n### Statistiken")
+            parts.append(f"- Gesamtinteraktionen: {stats['total_interactions']}")
             if stats.get("last_interaction"):
                 try:
                     last = datetime.fromisoformat(stats["last_interaction"])
-                    parts.append(f"- Ultima interazione: {last.strftime('%d/%m/%Y %H:%M')}")
+                    parts.append(f"- Letzte Interaktion: {last.strftime('%d.%m.%Y %H:%M')}")
                 except ValueError:
                     pass
 
