@@ -33,6 +33,7 @@ from homeassistant.helpers.selector import (
     TextSelectorType,
 )
 
+from .assistant_memory import AssistantMemory
 from .const import (
     CONF_AREA_FILTER,
     CONF_CHAT_MODEL,
@@ -49,6 +50,7 @@ from .const import (
     DEFAULT_CONVERSATION_NAME,
     DOMAIN,
     FALLBACK_MODELS,
+    MEMORY_KEY,
     MODELS_CACHE_KEY,
     PERSONALITY_CONCISE,
     PERSONALITY_FORMAL,
@@ -213,6 +215,15 @@ class ZaiOptionsFlowHandler(OptionsFlow):
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
+        """Show the options menu."""
+        return self.async_show_menu(
+            step_id="init",
+            menu_options=["configure", "view_memory", "clear_memory"],
+        )
+
+    async def async_step_configure(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
         """Handle conversation agent configuration."""
         errors: dict[str, str] = {}
 
@@ -283,9 +294,54 @@ class ZaiOptionsFlowHandler(OptionsFlow):
         ] = BooleanSelector()
 
         return self.async_show_form(
-            step_id="init",
+            step_id="configure",
             data_schema=vol.Schema(schema_dict),
             errors=errors,
+        )
+
+    async def async_step_view_memory(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Show the assistant's persistent memory."""
+        if user_input is not None:
+            return await self.async_step_init()
+
+        memory_content = ""
+        domain_data = self.hass.data.get(DOMAIN, {})
+        entry_data = domain_data.get(self.config_entry.entry_id, {})
+        memory: AssistantMemory | None = entry_data.get(MEMORY_KEY)
+
+        if memory:
+            await memory.async_load()
+            memory_content = memory.build_memory_prompt()
+            if not memory_content.strip():
+                memory_content = "No memory entries stored yet."
+        else:
+            memory_content = "Memory is not available for this entry."
+
+        return self.async_show_form(
+            step_id="view_memory",
+            description_placeholders={"memory_content": memory_content},
+        )
+
+    async def async_step_clear_memory(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Clear the assistant's persistent memory."""
+        if user_input is not None:
+            if user_input.get("confirm_clear"):
+                domain_data = self.hass.data.get(DOMAIN, {})
+                entry_data = domain_data.get(self.config_entry.entry_id, {})
+                memory: AssistantMemory | None = entry_data.get(MEMORY_KEY)
+                if memory:
+                    await memory.async_clear()
+            return await self.async_step_init()
+
+        return self.async_show_form(
+            step_id="clear_memory",
+            data_schema=vol.Schema({
+                vol.Required("confirm_clear"): BooleanSelector(),
+            }),
         )
 
     async def async_step_advanced(

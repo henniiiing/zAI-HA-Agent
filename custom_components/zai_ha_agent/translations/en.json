@@ -22,6 +22,15 @@
   "options": {
     "step": {
       "init": {
+        "title": "zAI HA Agent",
+        "description": "Choose an option",
+        "menu_options": {
+          "configure": "Configure",
+          "view_memory": "View Memory",
+          "clear_memory": "Clear Memory"
+        }
+      },
+      "configure": {
         "title": "Configure zAI HA Agent",
         "description": "Configure your z.ai conversation agent",
         "data": {
@@ -54,6 +63,17 @@
           "max_tokens": "Maximum number of tokens to generate",
           "temperature": "Sampling temperature (0-1). Lower = more consistent",
           "area_filter": "Only include devices from these areas (empty = all)"
+        }
+      },
+      "view_memory": {
+        "title": "Assistant Memory",
+        "description": "{memory_content}"
+      },
+      "clear_memory": {
+        "title": "Clear Memory",
+        "description": "This will permanently delete all stored preferences, notes, and context. This cannot be undone.",
+        "data": {
+          "confirm_clear": "Yes, clear all memory"
         }
       }
     }

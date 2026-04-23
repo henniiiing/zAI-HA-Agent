@@ -66,7 +66,11 @@ This is an OpenAI-compatible Chat Completions API. The `openai` Python SDK is us
 
 ### Configuration Options
 
-After installation, click **Configure** on the integration:
+After installation, click **Configure** on the integration to see the options menu:
+
+- **Configure** — Adjust integration settings
+- **View Memory** — Browse the assistant's stored preferences, notes, and context
+- **Clear Memory** — Permanently delete all stored memory
 
 #### Basic Options
 
@@ -87,6 +91,16 @@ After installation, click **Configure** on the integration:
 | **Max tokens** | Maximum response length | 3000 | 1–8000 |
 | **Temperature** | Response creativity | 0.7 | 0–1 |
 | **Area filter** | Limit context to devices in specific areas | All | Multi-select |
+
+#### Memory Viewer
+
+The **View Memory** option shows a read-only summary of everything the assistant has stored:
+- User preferences (e.g. "I prefer warm lights in the evening")
+- Notes (e.g. "Call the plumber tomorrow")
+- Context key-value pairs
+- Interaction stats
+
+Use **Clear Memory** to wipe all stored data. A confirmation checkbox is required to prevent accidental deletion.
 
 ## Usage
 
